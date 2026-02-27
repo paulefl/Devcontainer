@@ -1,0 +1,35 @@
+{
+  "name": "Devcontainer (Podman)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // Podman / Rootless / SELinux
+  "runArgs": [
+    "--security-opt=label=disable"
+  ],
+
+  // Workspace sauber mounten (VS Code übernimmt intern bind-mount)
+  "workspaceFolder": "/workspace",
+
+  "remoteUser": "devuser",
+
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "OpenAI.openai",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-python.python"
+      ]
+    }
+  },
+
+  // Stabiler Container-Start (wichtig für Podman)
+  "overrideCommand": false
+}
