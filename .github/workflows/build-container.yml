@@ -1,0 +1,36 @@
+name: Build Devcontainer (Podman)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Podman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+
+      - name: Podman info
+        run: podman info
+
+      - name: Build devcontainer image
+        run: |
+          podman build \
+            -f .devcontainer/Dockerfile \
+            -t my-devcontainer:ci \
+            .
+
+      - name: Test container startup
+        run: |
+          podman run --rm my-devcontainer:ci \
+            bash -c "whoami && cmake --version && gcc --version"
